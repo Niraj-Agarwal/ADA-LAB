@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+// This is a game where we're going to explore different places connected by paths.
+
+class Graph {
+    int V; // The number of places (vertices)
+    vector<vector<int>> adjList; // List of paths between places
+
+public:
+    Graph(int vertices) : V(vertices) {
+        adjList.resize(V);
+    }
+
+    void addEdge(int u, int v) {
+        adjList[u].push_back(v); // We're drawing a path from place u to place v.
+    }
+
+    void BFS(int startVertex) {
+        vector<bool> visited(V, false); // Marking the places we've visited
+        queue<int> q; // A line where we wait our turn to explore places
+
+        visited[startVertex] = true; // We start exploring from a special place and tell everyone we're there.
+        q.push(startVertex); // We get in line to explore this special place.
+
+        while (!q.empty()) { // While there are places in line...
+            startVertex = q.front(); // We go to the place at the front of the line and explore it.
+            cout << startVertex << " "; // We tell everyone about the place we've just explored.
+            q.pop(); // We've finished exploring, so we leave this place.
+
+            for (int i = 0; i < adjList[startVertex].size(); ++i) {
+                int adjVertex = adjList[startVertex][i]; // We look at the places connected to the one we just explored.
+                if (!visited[adjVertex]) { // If we haven't been to this place before...
+                    visited[adjVertex] = true; // We tell everyone we're coming to this new place.
+                    q.push(adjVertex); // We get in line to explore this new place.
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    int V = 6; // We have 6 different places to explore
+    Graph graph(V);
+
+    // Let's draw paths between these places
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(1, 4);
+    graph.addEdge(2, 4);
+    graph.addEdge(3, 5);
+    graph.addEdge(4, 5);
+
+    int startVertex = 0; // We'll start exploring from place number 0
+
+    // Let's explore all the connected places starting from place 0!
+    cout << "Places reachable from place " << startVertex << " using a special way: ";
+    graph.BFS(startVertex);
+
+    return 0;
+}
