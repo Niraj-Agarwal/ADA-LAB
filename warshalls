@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+int MAX(int a,int b)
+{
+    return (a >b)?a:b;
+}
+void warshall(int p[10][10],int n)
+{
+    for(int k=1;k<=n;k++)
+    for(int i=1;i<=n;i++)
+    for(int j=1;j<=n;j++)
+        p[i][j]=MAX(p[i][j],p[i][k]&&p[k][j]);
+}
+int main()
+{
+    int p[10][10]={0},n,e,u,v;
+    cout<<"Enter the number of vertices\n";
+    cin>>n;
+    cout<<"Enter the number of edges\n";
+    cin>>e;
+    for(int i=1;i<=e;i++)
+    {
+        cout<<"Enter the connection btw (point and edge)::";
+        cin>>u>>v;
+        p[u][v]=1;
+    }
+    cout<<"Adjancy matrix \n";
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            cout<<p[i][j]<<"\t";
+        }
+        cout<<endl;
+    }
+    clock_t start,end;
+    start=clock();
+    warshall(p,n);
+    end=clock();
+    cout<<"transitive closure\n";
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            cout<<p[i][j]<<"\t";
+        }
+        cout<<endl;
+    }
+    double time_spent=(double)(end-start)/CLOCKS_PER_SEC;
+    cout<<"Time spent: "<<time_spent<<"\n";
+    return 0;
+}
